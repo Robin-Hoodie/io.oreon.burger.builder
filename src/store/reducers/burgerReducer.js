@@ -1,4 +1,10 @@
-import * as actionTypes from '../actions/actionTypes';
+import {
+    BURGER_ADD_INGREDIENT,
+    BURGER_INIT_INGREDIENTS_FAILED,
+    BURGER_INIT_INGREDIENTS_LOADING,
+    BURGER_INIT_INGREDIENTS_SUCCESS,
+    BURGER_REMOVE_INGREDIENT
+} from '../actions/burgerActionTypes';
 
 const INGREDIENT_PRICES = {
     salad: .5,
@@ -25,49 +31,69 @@ const isPurchasable = (ingredients) => {
         .some(value => value > 0);
 };
 
+const burgerAddIngredient = (state, action) => {
+    return {
+        ...state,
+        ingredients: {
+            ...state.ingredients,
+            [action.payload]: state.ingredients[action.payload] + 1
+        },
+        totalPrice: state.totalPrice + INGREDIENT_PRICES[action.payload],
+        purchasable: true
+    };
+};
+
+const burgerRemoveIngredient = (state, action) => {
+    const ingredients = {
+        ...state.ingredients,
+        [action.payload]: state.ingredients[action.payload] - 1
+    };
+    return {
+        ...state,
+        ingredients,
+        totalPrice: state.totalPrice - INGREDIENT_PRICES[action.payload],
+        purchasable: isPurchasable(ingredients)
+    };
+};
+
+const burgerInitIngredientSuccess = (state, action) => {
+    return {
+        ...state,
+        ingredients: action.payload,
+        totalPrice: calculateTotalPrice(action.payload),
+        purchasable: isPurchasable(action.payload),
+        loading: false,
+        error: null
+    };
+};
+
+const burgerInitIngredientsFailed = (state, action) => {
+    return {
+        ...state,
+        error: action.payload,
+        loading: false
+    };
+};
+
+const burgerInitIngredientsLoading = state => {
+    return {
+        ...state,
+        loading: true
+    };
+};
+
 const reducer = (state = initialState, action) => {
     switch (action.type) {
-        case actionTypes.BURGER_ADD_INGREDIENT:
-            return {
-                ...state,
-                ingredients: {
-                    ...state.ingredients,
-                    [action.payload]: state.ingredients[action.payload] + 1
-                },
-                totalPrice: state.totalPrice + INGREDIENT_PRICES[action.payload],
-                purchasable: true
-            };
-        case actionTypes.BURGER_REMOVE_INGREDIENT:
-            const ingredients = {
-                ...state.ingredients,
-                [action.payload]: state.ingredients[action.payload] - 1
-            };
-            return {
-                ...state,
-                ingredients,
-                totalPrice: state.totalPrice - INGREDIENT_PRICES[action.payload],
-                purchasable: isPurchasable(ingredients)
-            };
-        case actionTypes.BURGER_FETCH_INGREDIENTS_SUCCESS:
-            return {
-                ...state,
-                ingredients: action.payload,
-                totalPrice: calculateTotalPrice(action.payload),
-                purchasable: isPurchasable(action.payload),
-                loading: false,
-                error: null
-            };
-        case actionTypes.BURGER_FETCH_INGREDIENTS_FAILED:
-            return {
-                ...state,
-                error: action.payload,
-                loading: false
-            };
-        case actionTypes.BURGER_FETCH_INGREDIENTS_LOADING:
-            return {
-                ...state,
-                loading: true
-            };
+        case BURGER_ADD_INGREDIENT:
+            return burgerAddIngredient(state, action);
+        case BURGER_REMOVE_INGREDIENT:
+            return burgerRemoveIngredient(state, action);
+        case BURGER_INIT_INGREDIENTS_SUCCESS:
+            return burgerInitIngredientSuccess(state, action);
+        case BURGER_INIT_INGREDIENTS_FAILED:
+            return burgerInitIngredientsFailed(state, action);
+        case BURGER_INIT_INGREDIENTS_LOADING:
+            return burgerInitIngredientsLoading(state);
         default:
             return state;
     }

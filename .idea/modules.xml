@@ -2,7 +2,7 @@
 <project version="4">
   <component name="ProjectModuleManager">
     <modules>
-      <module fileurl="file://$PROJECT_DIR$/.idea/burger-builder.iml" filepath="$PROJECT_DIR$/.idea/burger-builder.iml" />
+      <module fileurl="file://$PROJECT_DIR$/.idea/io.oreon.burger.builder.iml" filepath="$PROJECT_DIR$/.idea/io.oreon.burger.builder.iml" />
     </modules>
   </component>
 </project>

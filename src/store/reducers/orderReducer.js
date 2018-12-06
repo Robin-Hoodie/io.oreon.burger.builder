@@ -1,64 +1,91 @@
-import * as actionTypes from '../actions/actionTypes';
+import * as actionTypes from '../actions/orderActionTypes';
 
 const initialState = {
     orders: [],
-    addLoading: false,
-    addError: null,
-    addSuccess: false,
-    fetchLoading: false,
-    fetchError: null,
+    saveLoading: false,
+    saveError: null,
+    saveSuccess: false,
+    listLoading: false,
+    listError: null,
+};
+
+const orderSaveSuccess = (state, action) => {
+    return {
+        ...state,
+        orders: [
+            ...state.orders,
+            action.payload
+        ],
+        saveLoading: false,
+        saveError: null,
+        saveSuccess: true
+    };
+};
+
+const orderSaveLoading = state => {
+    return {
+        ...state,
+        saveLoading: true,
+        saveSuccess: false
+    };
+};
+
+const orderSaveError = (state, action) => {
+    return {
+        ...state,
+        saveLoading: false,
+        saveError: action.payload,
+        saveSuccess: false
+    };
+};
+
+const orderListSuccess = (state, action) => {
+    return {
+        ...state,
+        orders: action.payload,
+        listLoading: false,
+        listError: null
+    };
+};
+
+const orderListLoading = state => {
+    return {
+        ...state,
+        listLoading: true,
+    };
+};
+
+const orderListError = (state, action) => {
+    return {
+        ...state,
+        listLoading: false,
+        listError: action.payload
+    };
+};
+
+const orderSaveSuccessReset = state => {
+    return {
+        ...state,
+        saveSuccess: false
+    };
 };
 
 const reducer = (state = initialState, action) => {
     switch (action.type) {
-        case actionTypes.ORDER_ADD_SUCCESS:
-            return {
-                ...state,
-                orders: [
-                    ...state.orders,
-                    action.payload
-                ],
-                addLoading: false,
-                addError: null,
-                addSuccess: true
-            };
-        case actionTypes.ORDER_ADD_LOADING:
-            return {
-                ...state,
-                addLoading: true,
-                addSuccess: false
-            };
-        case actionTypes.ORDER_ADD_ERROR:
-            return {
-                ...state,
-                addLoading: false,
-                addError: action.payload,
-                addSuccess: false
-            };
-        case actionTypes.ORDER_FETCH_SUCCESS:
-            return {
-                ...state,
-                orders: action.payload,
-                fetchLoading: false,
-                fetchError: null
-            };
-        case actionTypes.ORDER_FETCH_LOADING:
-            return {
-                ...state,
-                fetchLoading: true,
-                fetchError: action.payload
-            };
-        case actionTypes.ORDER_FETCH_ERROR:
-            return {
-                ...state,
-                fetchLoading: false,
-                fetchError: action.payload
-            };
-        case actionTypes.ORDER_ADD_SUCCESS_RESET:
-            return {
-                ...state,
-                addSuccess: false
-            };
+        case actionTypes.ORDER_SAVE_SUCCESS:
+            return orderSaveSuccess(state, action);
+        case actionTypes.ORDER_SAVE_LOADING:
+            return orderSaveLoading(state, action);
+        case actionTypes.ORDER_SAVE_ERROR:
+            return orderSaveError(state, action);
+        case actionTypes.ORDER_LIST_SUCCESS:
+            return orderListSuccess(state, action);
+        case actionTypes.ORDER_LIST_LOADING:
+            return orderListLoading(state);
+        case actionTypes.ORDER_LIST_ERROR:
+            return orderListError(state, action);
+        case actionTypes.ORDER_LIST_SUCCESS_RESET:
+            return orderSaveSuccessReset(state);
         default:
             return state;
     }

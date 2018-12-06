@@ -1,16 +1,22 @@
-import * as actionTypes from './actionTypes';
 import axios from '../../axios-orders';
+import {
+    BURGER_ADD_INGREDIENT,
+    BURGER_INIT_INGREDIENTS_FAILED,
+    BURGER_INIT_INGREDIENTS_LOADING,
+    BURGER_INIT_INGREDIENTS_SUCCESS,
+    BURGER_REMOVE_INGREDIENT
+} from './burgerActionTypes';
 
 export const burgerAddIngredient = payload => {
     return {
-        type: actionTypes.BURGER_ADD_INGREDIENT,
+        type: BURGER_ADD_INGREDIENT,
         payload
     }
 };
 
 export const burgerRemoveIngredient = payload => {
     return {
-        type: actionTypes.BURGER_REMOVE_INGREDIENT,
+        type: BURGER_REMOVE_INGREDIENT,
         payload
     }
 };
@@ -18,17 +24,17 @@ export const burgerRemoveIngredient = payload => {
 export const burgerInitIngredients = () => {
     return async dispatch => {
         dispatch({
-            type: actionTypes.BURGER_FETCH_INGREDIENTS_LOADING
+            type: BURGER_INIT_INGREDIENTS_LOADING
         });
         try {
             const response = await axios.get('/ingredients.json');
             dispatch({
-                type: actionTypes.BURGER_FETCH_INGREDIENTS_SUCCESS,
+                type: BURGER_INIT_INGREDIENTS_SUCCESS,
                 payload: response.data
             });
         } catch (error) {
             dispatch({
-                type: actionTypes.BURGER_FETCH_INGREDIENTS_FAILED,
+                type: BURGER_INIT_INGREDIENTS_FAILED,
                 payload: error
             });
         }

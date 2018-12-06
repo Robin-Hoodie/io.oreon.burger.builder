@@ -6,7 +6,7 @@ import ContactData from './ContactData/ContactData';
 
 import {connect} from 'react-redux';
 import {Redirect} from 'react-router-dom';
-import {resetAddOrderSuccess} from '../../store/actions/orderActions';
+import {resetSaveSuccess} from '../../store/actions/orderActions';
 
 class Checkout extends Component {
 
@@ -19,14 +19,14 @@ class Checkout extends Component {
     };
 
     componentWillUnmount() {
-        if (this.props.addSuccess) {
-            this.props.resetAddOrderSuccess();
+        if (this.props.saveSuccess) {
+            this.props.resetSaveSuccess();
         }
     }
 
     render() {
         let summary = <Redirect to="/"/>;
-        if (this.props.ingredients && !this.props.addSuccess) {
+        if (this.props.ingredients && !this.props.saveSuccess) {
             summary = (<div>
                 <CheckoutSummary ingredients={this.props.ingredients}
                                  onCancel={this.handleCancel}
@@ -42,13 +42,13 @@ class Checkout extends Component {
 const mapStateToProps = (state) => {
     return {
         ingredients: state.burger.ingredients,
-        addSuccess: state.order.addSuccess
+        saveSuccess: state.order.saveSuccess
     }
 };
 
 const mapDispatchToProps = (dispatch) => {
     return {
-        resetAddOrderSuccess: () => dispatch(resetAddOrderSuccess())
+        resetSaveSuccess: () => dispatch(resetSaveSuccess())
     }
 };
 

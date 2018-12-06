@@ -193,8 +193,8 @@ const mapStateToProps = state => {
     return {
         ingredients: state.burger.ingredients,
         totalPrice: state.burger.totalPrice,
-        loading: state.order.addLoading,
-        error: state.order.addError
+        loading: state.order.saveLoading,
+        error: state.order.saveError
     }
 };
 

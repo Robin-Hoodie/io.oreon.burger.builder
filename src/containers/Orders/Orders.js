@@ -33,7 +33,7 @@ const mapStateToProps = state => {
     console.log(state);
     return {
         orders: state.order.orders,
-        loading: state.order.fetchLoading
+        loading: state.order.listLoading
     }
 };
 

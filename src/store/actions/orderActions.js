@@ -1,22 +1,23 @@
 import {
-    ORDER_ADD_SUCCESS,
-    ORDER_ADD_ERROR,
-    ORDER_ADD_LOADING,
-    ORDER_FETCH_SUCCESS,
-    ORDER_FETCH_LOADING,
-    ORDER_FETCH_ERROR, ORDER_ADD_SUCCESS_RESET
-} from './actionTypes';
+    ORDER_SAVE_SUCCESS,
+    ORDER_SAVE_ERROR,
+    ORDER_SAVE_LOADING,
+    ORDER_LIST_SUCCESS,
+    ORDER_LIST_LOADING,
+    ORDER_LIST_ERROR,
+    ORDER_LIST_SUCCESS_RESET
+} from './orderActionTypes';
 import axios from '../../axios-orders';
 
 export const addOrder = order => {
     return async dispatch => {
         dispatch({
-            type: ORDER_ADD_LOADING
+            type: ORDER_SAVE_LOADING
         });
         try {
             const response = await axios.post('/orders.json', order);
             dispatch({
-                type: ORDER_ADD_SUCCESS,
+                type: ORDER_SAVE_SUCCESS,
                 payload: {
                     id: response.data.name,
                     data: order
@@ -24,7 +25,7 @@ export const addOrder = order => {
             });
         } catch (error) {
             dispatch({
-                type: ORDER_ADD_ERROR,
+                type: ORDER_SAVE_ERROR,
                 payload: error
             });
         }
@@ -34,7 +35,7 @@ export const addOrder = order => {
 export const fetchOrders = () => {
     return async dispatch => {
         dispatch({
-            type: ORDER_FETCH_LOADING
+            type: ORDER_LIST_LOADING
         });
         try {
             const response = await axios.get('/orders.json');
@@ -46,20 +47,20 @@ export const fetchOrders = () => {
                     }
                 });
             dispatch({
-                type: ORDER_FETCH_SUCCESS,
+                type: ORDER_LIST_SUCCESS,
                 payload: orders
             });
         } catch (error) {
             dispatch({
-                type: ORDER_FETCH_ERROR,
+                type: ORDER_LIST_ERROR,
                 payload: error
             });
         }
     }
 };
 
-export const resetAddOrderSuccess = () => {
+export const resetSaveSuccess = () => {
     return {
-        type: ORDER_ADD_SUCCESS_RESET
+        type: ORDER_LIST_SUCCESS_RESET
     }
 };
