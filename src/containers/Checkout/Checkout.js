@@ -5,6 +5,8 @@ import {Route} from 'react-router-dom';
 import ContactData from './ContactData/ContactData';
 
 import {connect} from 'react-redux';
+import {Redirect} from 'react-router-dom';
+import {resetAddOrderSuccess} from '../../store/actions/orderActions';
 
 class Checkout extends Component {
 
@@ -16,23 +18,38 @@ class Checkout extends Component {
         this.props.history.replace('/checkout/contact-data');
     };
 
+    componentWillUnmount() {
+        if (this.props.addSuccess) {
+            this.props.resetAddOrderSuccess();
+        }
+    }
+
     render() {
-        return (
-            <div>
+        let summary = <Redirect to="/"/>;
+        if (this.props.ingredients && !this.props.addSuccess) {
+            summary = (<div>
                 <CheckoutSummary ingredients={this.props.ingredients}
                                  onCancel={this.handleCancel}
                                  onContinue={this.handleContinue}/>
                 <Route path={`${this.props.match.path}/contact-data`}
                        component={ContactData}/>
-            </div>
-        );
+            </div>)
+        }
+        return summary;
     }
 }
 
 const mapStateToProps = (state) => {
     return {
-        ingredients: state.burger.ingredients
+        ingredients: state.burger.ingredients,
+        addSuccess: state.order.addSuccess
     }
 };
 
-export default connect(mapStateToProps)(Checkout);
+const mapDispatchToProps = (dispatch) => {
+    return {
+        resetAddOrderSuccess: () => dispatch(resetAddOrderSuccess())
+    }
+};
+
+export default connect(mapStateToProps, mapDispatchToProps)(Checkout);

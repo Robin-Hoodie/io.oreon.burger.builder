@@ -6,27 +6,18 @@ import Modal from '../../components/UI/Modal/Modal';
 import OrderSummary from '../../components/Burger/OrderSummary/OrderSummary';
 import axios from '../../axios-orders';
 import withErrorHandler from '../../hoc/withErrorHandler/withErrorHandler';
-import * as actionTypes from '../../store/actions';
 import Spinner from '../../components/UI/Spinner/Spinner.js';
 
-import { connect } from 'react-redux';
+import {connect} from 'react-redux';
+import {burgerAddIngredient, burgerRemoveIngredient, burgerInitIngredients} from '../../store/actions/burgerActions';
 
 class BurgerBuilder extends Component {
     state = {
-        purchasing: false,
-        loading: false,
-        error: null
+        purchasing: false
     };
 
-    async componentDidMount() {
-        try {
-            const response = await axios.get('/ingredients.json');
-            this.props.setIngredients(response.data);
-        } catch (error) {
-            this.setState({
-                error
-            });
-        }
+    componentDidMount() {
+        this.props.burgerInitIngredients();
     }
 
     handleAddIngredient = (type) => {
@@ -78,10 +69,9 @@ class BurgerBuilder extends Component {
         let modalContent = <OrderSummary ingredients={this.props.ingredients}
                                          onCancel={this.handlePurchaseCancel}
                                          onContinue={this.handlePurchaseContinue}
-                                         price={this.props.totalPrice}
-        />;
-        if (this.state.loading || !this.props.ingredients) {
-            modalContent = this.state.error ? <p>Ingredients can't be loaded</p> : <Spinner/>;
+                                         price={this.props.totalPrice}/>;
+        if (this.props.loading || !this.props.ingredients) {
+            modalContent = this.props.error ? <p>Ingredients can't be loaded</p> : <Spinner/>;
         }
         let burger = (
             <>
@@ -114,15 +104,17 @@ const mapStateToProps = (state) => {
     return {
         ingredients: state.burger.ingredients,
         totalPrice: state.burger.totalPrice,
-        purchasable: state.burger.purchasable
+        purchasable: state.burger.purchasable,
+        error: state.burger.error,
+        loading: state.burger.loading
     }
 };
 
 const mapDispatchToProps = (dispatch) => {
     return {
-        addIngredient: (ingredient) => dispatch({type: actionTypes.BURGER_ADD_INGREDIENT, payload: ingredient}),
-        removeIngredient: (ingredient) => dispatch({type: actionTypes.BURGER_REMOVE_INGREDIENT, payload: ingredient}),
-        setIngredients: (ingredients) => dispatch({type: actionTypes.BURGER_SET_INGREDIENTS, payload: ingredients})
+        addIngredient: ingredient => dispatch(burgerAddIngredient(ingredient)),
+        removeIngredient: ingredient => dispatch(burgerRemoveIngredient(ingredient)),
+        burgerInitIngredients: () => dispatch(burgerInitIngredients())
     }
 };
 

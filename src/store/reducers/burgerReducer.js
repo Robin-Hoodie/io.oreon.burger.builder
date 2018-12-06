@@ -1,4 +1,4 @@
-import * as actionTypes from '../actions';
+import * as actionTypes from '../actions/actionTypes';
 
 const INGREDIENT_PRICES = {
     salad: .5,
@@ -8,14 +8,11 @@ const INGREDIENT_PRICES = {
 };
 
 const initialState = {
-    ingredients: {
-        salad: 0,
-        bacon: 0,
-        cheese: 0,
-        meat: 0
-    },
+    ingredients: null,
     totalPrice: 4,
-    purchasable: false
+    purchasable: false,
+    error: null,
+    loading: false
 };
 
 const calculateTotalPrice = (ingredients) => {
@@ -51,12 +48,25 @@ const reducer = (state = initialState, action) => {
                 totalPrice: state.totalPrice - INGREDIENT_PRICES[action.payload],
                 purchasable: isPurchasable(ingredients)
             };
-        case actionTypes.BURGER_SET_INGREDIENTS:
+        case actionTypes.BURGER_FETCH_INGREDIENTS_SUCCESS:
             return {
                 ...state,
                 ingredients: action.payload,
                 totalPrice: calculateTotalPrice(action.payload),
-                purchasable: isPurchasable(action.payload)
+                purchasable: isPurchasable(action.payload),
+                loading: false,
+                error: null
+            };
+        case actionTypes.BURGER_FETCH_INGREDIENTS_FAILED:
+            return {
+                ...state,
+                error: action.payload,
+                loading: false
+            };
+        case actionTypes.BURGER_FETCH_INGREDIENTS_LOADING:
+            return {
+                ...state,
+                loading: true
             };
         default:
             return state;
