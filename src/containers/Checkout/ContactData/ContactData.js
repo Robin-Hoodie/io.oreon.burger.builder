@@ -8,7 +8,7 @@ import Input from '../../../components/UI/Forms/Input/Input';
 import connect from 'react-redux/es/connect/connect';
 import {addOrder} from '../../../store/actions/orderActions';
 import withErrorHandler from '../../../hoc/withErrorHandler/withErrorHandler';
-import * as validators from '../../../utility/validators';
+import * as validators from '../../../shared/validators';
 
 class ContactData extends Component {
 

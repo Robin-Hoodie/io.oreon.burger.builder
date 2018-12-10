@@ -1,13 +1,14 @@
-import React, {Component} from 'react';
+import React, {Component, lazy, Suspense} from 'react';
 import Layout from './hoc/Layout/Layout';
 import BurgerBuilder from './containers/BurgerBuilder/BurgerBuilder';
-import Checkout from "./containers/Checkout/Checkout";
 import {Redirect, Route, Switch, withRouter} from 'react-router-dom';
-import Orders from './containers/Orders/Orders';
-import Auth from './containers/Auth/Auth';
 import Logout from './containers/Auth/Logout/Logout';
 import {connect} from 'react-redux';
 import {checkAuthState} from './store/actions/authActions';
+import Spinner from './components/UI/Spinner/Spinner';
+import Checkout from './containers/Checkout/Checkout';
+import Orders from './containers/Orders/Orders';
+import Auth from './containers/Auth/Auth';
 
 class App extends Component {
 
@@ -15,14 +16,16 @@ class App extends Component {
         this.props.onTryAutoSignup();
     }
 
+    //TODO: Use React.lazy when react-router-dom 4.4 lands, see https://github.com/ReactTraining/react-router/issues/6471
     render() {
+
         let routes = (
             <Switch>
                 <Route path="/auth"
                        component={Auth}/>
                 <Route path="/"
                        component={BurgerBuilder}/>
-                <Redirect to="/" />
+                <Redirect to="/"/>
             </Switch>
         );
 
@@ -33,11 +36,13 @@ class App extends Component {
                            component={Checkout}/>
                     <Route path="/orders"
                            component={Orders}/>
+                    <Route path="/auth"
+                           component={Auth}/>
                     <Route path="/logout"
                            component={Logout}/>
                     <Route path="/"
                            component={BurgerBuilder}/>
-                    <Redirect to="/" />
+                    <Redirect to="/"/>
                 </Switch>
             )
         }
