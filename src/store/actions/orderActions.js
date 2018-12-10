@@ -9,13 +9,13 @@ import {
 } from './orderActionTypes';
 import axios from '../../axios-orders';
 
-export const addOrder = order => {
+export const addOrder = (order, token) => {
     return async dispatch => {
         dispatch({
             type: ORDER_SAVE_LOADING
         });
         try {
-            const response = await axios.post('/orders.json', order);
+            const response = await axios.post(`/orders.json?auth=${token}`, order);
             dispatch({
                 type: ORDER_SAVE_SUCCESS,
                 payload: {
@@ -32,13 +32,13 @@ export const addOrder = order => {
     }
 };
 
-export const fetchOrders = () => {
+export const fetchOrders = (token, userId) => {
     return async dispatch => {
         dispatch({
             type: ORDER_LIST_LOADING
         });
         try {
-            const response = await axios.get('/orders.json');
+            const response = await axios.get(`/orders.json?auth=${token}&orderBy="userId"&equalTo="${userId}"`);
             const orders = Object.entries(response.data)
                 .map(entry => {
                     return {

@@ -1,8 +1,8 @@
-export const ORDER_LIST_SUCCESS = '[Order] Fetched orders';
-export const ORDER_LIST_LOADING = '[Order] Fetch orders loading';
-export const ORDER_LIST_ERROR = '[Order] Failed to fetch orders';
+export const ORDER_LIST_SUCCESS = '[ORDER] List success';
+export const ORDER_LIST_LOADING = '[ORDER] List loading';
+export const ORDER_LIST_SUCCESS_RESET = '[ORDER] List Success Reset';
+export const ORDER_LIST_ERROR = '[ORDER] List failed';
 
-export const ORDER_SAVE_SUCCESS = '[Order] Add order success';
-export const ORDER_LIST_SUCCESS_RESET = '[Order] Reset success state';
-export const ORDER_SAVE_LOADING = '[Order] Add order loading';
-export const ORDER_SAVE_ERROR = '[Order] Failed to add order';
+export const ORDER_SAVE_SUCCESS = '[ORDER] Save success';
+export const ORDER_SAVE_LOADING = '[ORDER] Save loading';
+export const ORDER_SAVE_ERROR = '[ORDER]  Save failed';

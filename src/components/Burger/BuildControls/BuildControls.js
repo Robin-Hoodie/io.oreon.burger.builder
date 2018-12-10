@@ -1,6 +1,5 @@
-import React, {Component} from 'react';
+import React from 'react';
 import classes from './BuildControls.css';
-import PropTypes from 'prop-types';
 
 import BuildControl from './BuildControl/BuildControl';
 
@@ -11,30 +10,25 @@ const controls = [
     {label: 'Meat', type: 'meat'}
 ];
 
-class BuildControls extends Component {
-    render() {
-        return (
-            <div className={classes.BuildControls}>
-                <p>Current price: <strong>{this.props.price.toFixed(2)}</strong></p>
-                {controls.map(control => <BuildControl
-                    key={control.label}
-                    label={control.label}
-                    onIngredientAdded={() => this.props.onIngredientAdded(control.type)}
-                    onIngredientRemoved={() => this.props.onIngredientRemoved(control.type)}
-                    disabled={this.props.disabled[control.type]}
-                />)}
-                <button className={classes.OrderButton}
-                        disabled={!this.props.purchasable}
-                        onClick={this.props.onOrderNow}>
-                    ORDER NOW
-                </button>
-            </div>
-        );
-    }
-}
+const BuildControls = props => {
 
-BuildControls.propTypes = {
-    price: PropTypes.number.isRequired
+    return (
+        <div className={classes.BuildControls}>
+            <p>Current price: <strong>{props.price.toFixed(2)}</strong></p>
+            {controls.map(control => <BuildControl
+                key={control.label}
+                label={control.label}
+                onIngredientAdded={() => props.onIngredientAdded(control.type)}
+                onIngredientRemoved={() => props.onIngredientRemoved(control.type)}
+                disabled={props.disabled[control.type]}
+            />)}
+            <button className={classes.OrderButton}
+                    disabled={!props.purchasable}
+                    onClick={props.onOrderNow}>
+                {props.isAuthenticated ? 'ORDER NOW' : 'SIGN UP TO ORDER'}
+            </button>
+        </div>
+    );
 };
 
 export default BuildControls;

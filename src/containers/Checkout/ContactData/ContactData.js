@@ -8,6 +8,7 @@ import Input from '../../../components/UI/Forms/Input/Input';
 import connect from 'react-redux/es/connect/connect';
 import {addOrder} from '../../../store/actions/orderActions';
 import withErrorHandler from '../../../hoc/withErrorHandler/withErrorHandler';
+import * as validators from '../../../utility/validators';
 
 class ContactData extends Component {
 
@@ -48,8 +49,8 @@ class ContactData extends Component {
                 value: '',
                 validation: {
                     required: true,
-                    minLength: 5,
-                    maxLength: 5
+                    minLength: 4,
+                    maxLength: 4
                 },
                 valid: false,
                 touched: false
@@ -75,7 +76,8 @@ class ContactData extends Component {
                 },
                 value: '',
                 validation: {
-                    required: true
+                    required: true,
+                    email: true
                 },
                 valid: false,
                 touched: false
@@ -111,21 +113,25 @@ class ContactData extends Component {
         const order = {
             ingredients: this.props.ingredients,
             price: this.props.totalPrice,
-            orderData: formData
+            orderData: formData,
+            userId: this.props.userId
         };
-        this.props.addOrder(order);
+        this.props.addOrder(order, this.props.token);
     };
 
     checkValidity(value, rules) {
         let isValid = true;
         if (rules.required) {
-            isValid = value.trim() !== '' && isValid;
+            isValid = validators.validateRequired(value) && isValid;
         }
         if (rules.minLength) {
-            isValid = value.length >= rules.minLength && isValid;
+            isValid = validators.validateMinLength(value, rules.minLength) && isValid;
         }
         if (rules.maxLength) {
-            isValid = value.length <= rules.maxLength && isValid;
+            isValid = validators.validateMaxLength(value, rules.maxLength) && isValid;
+        }
+        if (rules.email) {
+            isValid = validators.validateEmail(value) && isValid;
         }
         return isValid;
     }
@@ -194,13 +200,15 @@ const mapStateToProps = state => {
         ingredients: state.burger.ingredients,
         totalPrice: state.burger.totalPrice,
         loading: state.order.saveLoading,
-        error: state.order.saveError
+        error: state.order.saveError,
+        token: state.auth.token,
+        userId: state.auth.userId
     }
 };
 
 const mapDispatchToProps = dispatch => {
     return {
-        addOrder: order => dispatch(addOrder(order))
+        addOrder: (order, token) => dispatch(addOrder(order, token))
     };
 };
 export default connect(mapStateToProps, mapDispatchToProps)(withErrorHandler(ContactData, axios));

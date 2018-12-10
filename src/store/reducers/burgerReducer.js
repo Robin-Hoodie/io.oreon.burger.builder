@@ -18,7 +18,8 @@ const initialState = {
     totalPrice: 4,
     purchasable: false,
     error: null,
-    loading: false
+    loading: false,
+    building: false
 };
 
 const calculateTotalPrice = (ingredients) => {
@@ -39,7 +40,8 @@ const burgerAddIngredient = (state, action) => {
             [action.payload]: state.ingredients[action.payload] + 1
         },
         totalPrice: state.totalPrice + INGREDIENT_PRICES[action.payload],
-        purchasable: true
+        purchasable: true,
+        building: true
     };
 };
 
@@ -52,7 +54,8 @@ const burgerRemoveIngredient = (state, action) => {
         ...state,
         ingredients,
         totalPrice: state.totalPrice - INGREDIENT_PRICES[action.payload],
-        purchasable: isPurchasable(ingredients)
+        purchasable: isPurchasable(ingredients),
+        building: true
     };
 };
 
@@ -78,7 +81,8 @@ const burgerInitIngredientsFailed = (state, action) => {
 const burgerInitIngredientsLoading = state => {
     return {
         ...state,
-        loading: true
+        loading: true,
+        building: false
     };
 };
 
