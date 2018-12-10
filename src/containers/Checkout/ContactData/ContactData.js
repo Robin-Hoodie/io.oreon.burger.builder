@@ -5,7 +5,7 @@ import classes from './ContactData.css';
 import axios from '../../../axios-orders';
 import Spinner from '../../../components/UI/Spinner/Spinner';
 import Input from '../../../components/UI/Forms/Input/Input';
-import connect from 'react-redux/es/connect/connect';
+import {connect} from 'react-redux';
 import {addOrder} from '../../../store/actions/orderActions';
 import withErrorHandler from '../../../hoc/withErrorHandler/withErrorHandler';
 import * as validators from '../../../shared/validators';

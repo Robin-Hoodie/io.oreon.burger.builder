@@ -1,7 +1,6 @@
 import React, {Component} from 'react';
 import classes from './OrderSummary.css';
 import Button from '../../UI/Button/Button';
-import PropTypes from 'prop-types';
 
 class OrderSummary extends Component {
 
@@ -32,11 +31,5 @@ class OrderSummary extends Component {
         );
     }
 }
-
-OrderSummary.propTypes = {
-    price: PropTypes.number.isRequired,
-    onCancel: PropTypes.func.isRequired,
-    onContinue: PropTypes.func.isRequired
-};
 
 export default OrderSummary;
