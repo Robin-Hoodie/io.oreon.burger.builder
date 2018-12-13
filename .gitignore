@@ -26,3 +26,4 @@ yarn-error.log*
 *.iml
 
 .firebaserc
+src/shared/firebase.js
