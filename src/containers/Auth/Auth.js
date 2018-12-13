@@ -6,7 +6,6 @@ import classes from './Auth.css';
 import {auth, setAuthRedirectPath} from '../../store/actions/authActions';
 import {connect} from 'react-redux';
 import Spinner from '../../components/UI/Spinner/Spinner';
-import {withRouter} from 'react-router-dom';
 
 class Auth extends Component {
 

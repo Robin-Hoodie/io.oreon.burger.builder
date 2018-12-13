@@ -1,7 +1,6 @@
 import axios from '../../axios-auth';
 import {AUTH_FAIL, AUTH_LOGOUT, AUTH_SET_REDIRECT_PATH, AUTH_START, AUTH_SUCCESS} from './authActionTypes';
-
-const FIREBASE_API_KEY = 'AIzaSyDQQQCOPnIRp0W2wpGpYYxR-7ao_K8vuKE';
+import { FIREBASE_API_KEY } from '../../shared/firebase';
 
 export const logout = () => {
     localStorage.removeItem('token');
